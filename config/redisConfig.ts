@@ -16,5 +16,5 @@ const redisClient = new Redis(
 export const redisSessionStore = new RedisStore({
   client: redisClient,
   prefix: "my-NodeJs-app-redis-store:",
-  ttl: undefined,
+  ttl: Number.parseInt(process.env.REDIX_TTL_SECONDS || "5"),
 });
