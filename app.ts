@@ -6,8 +6,11 @@ import { config } from "dotenv";
 config();
 
 import publicRoutes from "./routes/public";
+import blogRoutes from "./routes/blog";
 import { redisSessionStore } from "./config/redisConfig";
 import { AppDataSource } from "./data-source";
+import cookieParser from "cookie-parser";
+import { isAuth } from "./middlewares/is-auth";
 
 const app = express();
 
@@ -20,8 +23,11 @@ app.use(
     saveUninitialized: false,
   })
 );
+app.use(cookieParser());
 app.use(express.json());
 app.use(publicRoutes);
+app.use(isAuth);
+app.use("/blog", blogRoutes);
 
 app.listen(process.env.PORT, () => {
   AppDataSource.initialize().then((value) => {

@@ -4,14 +4,25 @@ version: '3'
 
 
 services:
-  redis-db:
-    image: redis
+  # redis-db:
+  #   image: redis
+  #   ports:
+  #     - 6379:6379
+  #   volumes:
+  #     - redis_data:/data
+  #   command: /bin/sh -c "redis-server --requirepass root"
+  redis-server: 
+    image: redis/redis-stack:latest
     ports:
       - 6379:6379
-    volumes:
-      - redis_data:/data
-    command: /bin/sh -c "redis-server --requirepass root"
-  
+      - 8001:8001
+    # volumes:
+    #   - redis_data:/data
+    # command: /bin/sh -c "redis-server --requirepass root"
+
+# docker run -d --name redis-stack -p 6379:6379 -p 8001:8001 redis/redis-stack:latest
+
+
   postgres:
     image: postgres
     ports:
@@ -20,8 +31,9 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: root
       POSTGRES_DB: test
-    # volumes:
-    #   - ./data:/var/lib/postgresql/data  
+    volumes:
+      - ./data:/var/lib/postgresql/data  
+  
 
 volumes:
   redis_data:

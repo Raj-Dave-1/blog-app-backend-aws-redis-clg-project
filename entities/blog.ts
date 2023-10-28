@@ -1,6 +1,13 @@
 // Dada Ki Jay Ho
 
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  JoinColumn,
+} from "typeorm";
+import { User } from "./user";
 
 @Entity()
 export class Blog {
@@ -13,12 +20,16 @@ export class Blog {
   @Column()
   description: string;
 
-  @Column()
+  @Column({ nullable: true })
   coverImageUrl: string;
 
-  @Column()
-  likes: string;
+  @Column({ default: 0 })
+  likes: number;
 
-  @Column()
-  views: string;
+  @Column({ default: 0 })
+  views: number;
+
+  @ManyToOne(() => User, (user) => user.blogs)
+  @JoinColumn({ name: "authorId" })
+  author: User;
 }

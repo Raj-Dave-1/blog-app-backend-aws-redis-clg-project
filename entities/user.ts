@@ -1,6 +1,8 @@
 // Dada Ki Jay Ho
 
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
+import { IsNotEmpty, IsString } from "class-validator";
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
+import { Blog } from "./blog";
 
 @Entity()
 export class User {
@@ -8,17 +10,30 @@ export class User {
   id: string;
 
   @Column()
+  @IsString()
+  @IsNotEmpty()
   firstName: string;
 
   @Column()
+  @IsString()
+  @IsNotEmpty()
   lastName: string;
 
-  @Column()
+  @Column({ unique: true })
+  @IsString()
+  @IsNotEmpty()
   email: string;
 
   @Column()
+  @IsString()
+  @IsNotEmpty()
   password: string;
 
   @Column()
+  @IsString()
+  @IsNotEmpty()
   salt: string;
+
+  @OneToMany(() => Blog, (blog) => blog.author)
+  blogs: Blog[];
 }
